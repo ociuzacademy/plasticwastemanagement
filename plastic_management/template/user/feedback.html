@@ -1,0 +1,38 @@
+ {% extends 'user/header_footer.html' %}
+{% block content %}
+      
+
+<section id="trainers-single-area" class="pt-150">
+        <div class="container">
+            <div class="row">
+            
+
+                <div class="col-lg-4 col-md-5">
+                    <div class="trainers-single-img">
+                        <img src="/static/assets/img/img/im2.png" alt="">
+                        
+                    </div>
+                </div>
+                <div class="col-lg-7 offset-lg-1 col-md-7 offset-md-0">
+                    <form class="leave-comment-form" action="/feedback/" method="post">
+  {% csrf_token %}
+                        
+                            <h3>Leave a comment</h3>
+                            <input type="hidden" name="pid" value="{{pid}}">
+                            <input type="text" name="name" placeholder="Name">
+                            <input type="email" name="email" placeholder="Email">
+                            <textarea name="commet" id="commet" placeholder="Comment"></textarea>
+                            <button type="submit" class="btn btn-7">submit</button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        
+
+    </section>
+
+ {% endblock %}

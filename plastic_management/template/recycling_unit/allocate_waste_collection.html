@@ -1,0 +1,75 @@
+
+{% extends 'recycling_unit/header_footer.html' %}
+    
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Add Workers....</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="/recyclingunit_home/"><a href="#">Home</a></li>
+              
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        
+<section class="content">
+    <h1>{{error}}</h1>
+      <form role="form"action="/allocate_work/" method="POST" >
+  {% csrf_token %}
+                <div class="card-body">
+                  <div class="form-group">
+                    <!-- <label for="exampleInputEmail1">Name:</label> -->
+                    <input type="hidden" name="wid" value="{{wid}}" >
+                  </div>
+                  
+                  <div class="form-group">
+                    <label for="exampleInputPassword1">Allocate work to:</label>
+                    <select name="worker" class="form-control">
+                <option disabled selected>select </option>
+                {% for x in ob %}
+                <option value="{{x.email}}">{{x.name}}</option>
+                {% endfor %}
+              </select>
+                  </div>
+
+
+
+                  <div class="form-check">
+                    <!-- <input type="checkbox" class="form-check-input" id="exampleCheck1"> -->
+                    <!-- <label class="form-check-label" for="exampleCheck1">Check me out</label> -->
+                  </div>
+                </div>
+                <!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+      <!-- /.row -->
+    </section>
+
+        
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  {% endblock %}

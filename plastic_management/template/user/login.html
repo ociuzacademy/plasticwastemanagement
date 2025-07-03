@@ -1,0 +1,55 @@
+
+{% extends 'user/baseheader_footer.html' %}
+    
+{% block content %}
+
+
+
+ <section id="my-account-area" class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="my-account-content">
+                        <h2>Login</h2>
+                        <form class="my-account-form"method="POST" action="/user_login/">
+                {% csrf_token %}
+                            <label for="username">Email address *</label>
+                            <input type="email" id="username" name="email">
+
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="psw">
+
+                            <button type="submit" class="btn">Log In </button>
+                            <div class="wrapper">
+                                <!-- <input id="a11y-issue-1" name="a11y-issues" type="checkbox" value="no-issues"> -->
+                                <!-- <label for="a11y-issue-1">There are no issues.</label> -->
+                            </div>
+                            <!-- <a href="#">Lost your password?</a> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    {% if error %}
+<script type="text/javascript">
+  swal("Error!", "{{error}}", "error");
+</script>
+{% endif %}
+
+{% if success %}
+<script type="text/javascript">
+  swal("Congrats!", "{{success}}", "success");
+</script>
+{% endif %}
+
+{% if info %}
+<script type="text/javascript">
+  swal("Information!", "{{info}}", "info");
+</script>
+{% endif %}
+
+   {% endblock %}

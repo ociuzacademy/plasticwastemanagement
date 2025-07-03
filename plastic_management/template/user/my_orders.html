@@ -1,0 +1,42 @@
+ {% extends 'user/header_footer.html' %}
+{% block content %}
+       {% for x in db %}
+
+<section id="trainers-single-area" class="pt-150">
+        <div class="container">
+            <div class="row">
+            
+
+                <div class="col-lg-4 col-md-5">
+                    <div class="trainers-single-img">
+                        <img src="{{x.product_id.image.url}}" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-7 offset-lg-1 col-md-7 offset-md-0">
+                    <div class="trainers-single-text">
+                        <h2>{{x.product_id.name}}</h2>
+                        <h6></h6>
+                        <p>{{x.product_id.description}}</p>
+
+                        <div class="trainers-information">
+                            <ul>
+                                <li><span>product code</span> : {{x.product_id.code}}</li>
+                                <li><span>Price</span> : {{x.product_id.price}}</li>
+                                <li><span>Delvery boy details</span> :{{x.worker_email}} </li>
+                                <li><span>Status</span> : {{x.status}}</li>
+                            </ul>
+                            <div class="cta-btn ">
+                        <a href="/feedback/?id={{x.id}}" class="btn btn-1">Add feedback</a>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+            {% endfor %}
+
+    </section>
+
+ {% endblock %}

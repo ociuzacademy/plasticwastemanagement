@@ -1,0 +1,217 @@
+{% extends 'user/header_footer.html' %}
+{% block content %}
+
+
+
+    <section >
+        <div class="container">
+                        <h1>MY <span>cart</span></h1>
+            
+        </div>
+    </section>
+    <!-- =====>> End Page Hero <<===== 
+    =========================== -->
+
+    <!-- ===========================
+    =====>> Team <<===== -->
+   <section id="services-area" class="pt-150 pb-150">
+    <table class="table">
+
+    <thead class="thead-dark">
+      <tr>
+        <th>Product</th>
+         <th>Quantity</th>
+          <th>Price</th>
+                        
+            <th>Amount</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for x in db %}
+        <tr>
+            <td>
+
+        <div class="service-content pt-50">
+            <div class="container-fluid">
+                
+                <div class="row ">
+                 
+               
+                    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                        <!-- <div class="services-box effect-item mt-40">
+                            <div class="services-item content-overlay"> -->
+                                <a href="/product_detail_view/?id={{x.product_id.id}}"><img src="{{x.product_id.image.url}}" alt=" " width="250" height="250">
+                                <!-- <div class="content-details fadeIn-top">
+                                    <i class="flaticon-male-silhouette-variant-showing-muscles "></i>
+                                    <h3>yoga</h3>
+                                    
+                                </div> -->
+                                </a>
+                            </div>
+                            <!-- <div class="services-text text-center">
+                                <i class="flaticon-male-silhouette-variant-showing-muscles "></i>
+                                <h3>yoga</h3>
+                            </div> -->
+                       <!--  </div>
+                    </div> -->
+                    <!-- Service Item -->
+                    
+                    <!-- Service Item -->
+                   
+                    <!-- Service Item -->
+                    
+                </div>
+            </div>
+        </div>
+    </td>
+    <td>
+        <div class="service-content pt-50">
+    <div class="container-fluid">
+               
+    <div class="row ">
+
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+    {{x.quantity}}</div></div></div></div>
+    </td>
+
+
+<td>
+        <div class="service-content pt-50">
+    <div class="container-fluid">
+               
+    <div class="row ">
+
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+    {{x.product_id.price}}</div></div></div></div>
+    </td>
+
+
+
+    <td>
+        <div class="service-content pt-50">
+    <div class="container-fluid">
+               
+    <div class="row ">
+
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+    {{x.total}}</div></div></div></div>
+    </td>
+
+
+    <td>
+        <div class="service-content pt-50">
+    <div class="container-fluid">
+               
+    <div class="row ">
+
+    <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6" >
+        <a href="/delete_cart/?id={{x.id}}"><i class="fa fa-trash">
+     </i></a>
+ </div></div></div></div>
+    </td>
+    </tr>
+</tbody>
+{% endfor %}
+</table>
+
+<script type="text/javascript">
+  function shlocaltotal()
+  {
+    var d=parseInt(document.getElementById("ld").value);
+    var d1=parseInt(document.getElementById("subtot").value);
+
+    totalprize=d+d1;
+    
+    document.getElementById("total").innerHTML=totalprize;
+    document.getElementById("subtotal").value=totalprize;
+
+  }
+
+</script>
+
+<script type="text/javascript">
+  function shhometotal()
+  {
+    var d=parseInt(document.getElementById("hd").value);
+    var d1=parseInt(document.getElementById("subtot").value);
+
+    totalprize=d+d1;
+    
+    document.getElementById("total").innerHTML=totalprize;
+    document.getElementById("subtotal").value=totalprize;
+  }
+
+</script>
+<form action="/user_cart_product_payment/" method="POST">
+  {% csrf_token %}
+
+  <div class="row">
+<div class="col-md-6">
+                <h2 class="h3 mb-3 text-black font-heading-serif">Shipping</h2>
+                <div class="p-3 p-lg-5 border">
+                  <table class="table site-block-order-table mb-5">
+                    <thead>
+                      <th>Delivery</th>
+                      <th>Total</th>
+                    </thead>
+                    <tbody>
+                      
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Local Delivery:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp50 </strong></td>
+                        <td class="text-black"><input type="radio" value=50
+                    id="ld" name="shipping" onclick="shlocaltotal()" required=""></td>
+                      </tr>
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Home Delivery:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp100 </strong></td>
+                        <td class="text-black"><input type="radio" value=100
+                    id="hd" name="shipping" onclick="shhometotal()" required=""></td>
+                      </tr>
+                    </tbody>
+                  </table>
+    </div>
+  </div>
+
+<div class="col-md-6">
+                <h2 class="h3 mb-3 text-black font-heading-serif">Grand Total</h2>
+                <div class="p-3 p-lg-5 border">
+                  <table class="table site-block-order-table mb-5">
+                    <thead>
+                      <th></th>
+                      <th></th>
+                    </thead>
+                    <tbody>
+                      
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Subtotal&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</strong></td>
+                        <td class="text-black"><strong class="text-black" id="subtotal" name="total" >{{sum}}</strong></td>
+                        <input type="text" id="subtot" value={{sum}} name="subtotal" hidden="" >
+                      </tr>
+                      <tr>
+                        <td class="text-black font-weight-bold"><strong>Total&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</strong></td>
+                        <td class="text-black"><strong class="text-black" id="total" name="total" ></strong></td>
+                        <input type="text" id="subtotal"  name="subtotal" hidden="">
+                      </tr>
+                    </tbody>
+                  </table>
+    </div>
+  </div>
+   <div class="p-3 p-lg-5 border">
+<center>
+<!-- <input type="submit" name="" value="buy all" class="btn btn-1">
+
+ -->
+   <div class="col-md-12 form-group">
+                              <input type="submit" class="btn btn-1" value="buy all">
+
+                            </div>
+ </center>
+</div>
+  </form>
+</div>
+
+
+
+    </section>
+
+ {% endblock %}

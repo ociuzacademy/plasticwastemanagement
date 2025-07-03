@@ -1,0 +1,77 @@
+{% extends 'user/header_footer.html' %}
+{% block content %}
+
+
+
+    <!-- ===========================
+    =====>> Shop Single <<===== -->
+
+    {% for x in db %}
+    <section id="shop-single-area" class="shop-single-gallery pt-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="shop-slider">
+                        <div class="shop-slider-item">
+                            <a href="/static/frontend/assets/img//shop/1.jpg" class="sg">
+                                <img src="{{x.image.url}}" alt="">
+                            </a>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col-lg-6">
+                    <div class="shop-slider2-right">
+                        <h2>{{x.name}}</h2>
+                        <h4>${{x.price}}</h4>
+                        <p>{{x.description}}</p>
+                        <div class="cart-add">
+                            <form action="/product_booking/?id={{x.id}}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="number" value="1" id="number">
+                           <button type="submit" class="btn btn-6">Buy Now</button>
+                           <a onclick = "this.href='/add_to_cart/?id={{x.id}}&number=' + document.getElementById('number').value"><button type="button" class="btn btn-6"><i class="fas fa-shopping-cart"></i> Add to cart</button></a>
+                            </form>
+
+                        </div>
+
+                        <div class="trainers-information">
+                            <ul>
+                                <li><span>Product Name</span> : {{x.name}}</li>
+                                <li><span>Product Description</span> : {{x.description}}</li>
+                                <!-- <li><span>Tags</span> : Library, Study</li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+    
+
+</div>
+
+  <script src="/static/frontend/assets/js/sweetalert-dev.js"></script>
+    <link rel="stylesheet" href="/static/frontend/assets/css/sweetalert.css">
+
+
+    {% if error %}
+<script type="text/javascript">
+  swal("Error!", "{{error}}", "error");
+</script>
+{% endif %}
+
+{% if success %}
+<script type="text/javascript">
+  swal("Congrats!", "{{success}}", "success");
+</script>
+{% endif %}
+
+{% if info %}
+<script type="text/javascript">
+  swal("Information!", "{{info}}", "info");
+</script>
+{% endif %}
+{% endblock %}

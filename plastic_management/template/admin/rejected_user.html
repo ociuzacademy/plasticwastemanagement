@@ -1,0 +1,94 @@
+
+{% extends 'admin/header_footer.html' %}
+    
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Rejected user list</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        
+<section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>User name</th>
+                  <th>Address</th>
+                  <th>Gender</th>
+                  <th>Email</th>
+                  <th>Place</th>
+                  <th>Phone Number</th>
+                  <!-- <th colspan="2">Status</th> -->
+                </tr>
+                </thead>
+                <tbody>
+                {% for x in db  %}
+
+                <tr>
+                  <td>{{x.name}}</td>
+                  <td>{{x.address}}</td>
+                  <td>{{x.gender}}</td>
+                  <td>{{x.email}}</td>
+                  <td>{{x.place}}</td>
+                  <td>{{x.mobile_Number}}</td>
+                 <!--  <td><a href="/approve_user/?id={{x.id}}">approve</a></td>
+                  <td><a href="/reject_user/?id={{x.id}}">reject</a></td> -->
+                </tr>
+                {% endfor %}
+               
+               
+                </tbody>
+                
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+
+        
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  {% endblock %}

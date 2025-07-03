@@ -1,0 +1,91 @@
+
+{% extends 'user/header_footer.html' %}
+    
+{% block content %}
+
+
+
+ <section id="my-account-area" class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="my-account-content">
+                        <h2>Add location....</h2>
+                        <form class="my-account-form" method="POST" action="/add_waste_loc/">
+                {% csrf_token %}
+                            <label for="username">Subject *</label>
+                            <input type="text" id="username" name="sub" required="required">
+                            <label for="username">Description *</label>
+                            <input type="text" id="username" name="des">
+
+               
+
+
+                            
+
+
+                            <label for="password">Address *</label>
+                            <input type="text" id="password" name="adss">
+
+                            <label for="password">Place *</label>
+                            <input type="text" id="password" name="place">
+
+                            
+
+                            <label for="password">District *</label>
+                            <select name="district" class="form-control">
+                            <option disabled selected>Select District </option>
+                
+                            <option value="alappuzha">Alappuzha</option>
+                            <option value="ernakulam">Ernakulam</option>
+
+                            <option value="idukki">Idukki</option>
+
+                            <option value="kannur">Kannur</option>
+
+                            <option value="kasaragod">Kasaragod</option>
+                            <option value="kollam">Kollam</option>
+                            <option value="kottayam">Kottayam</option>
+                            <option value="kozhikode">Kozhikode</option>
+                            <option value="malappuram">Malappuram</option>
+                            <option value="palakkad">Palakkad</option>
+                            <option value="pathanamthitta">Pathanamthitta</option>
+                            <option value="thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="thrissur">Thrissur</option>
+                             <option value="wayanad"> Wayanad</option>
+                            
+                            </select>
+                            <label for="password"></label>
+
+                            <button type="submit" class="btn">Submit </button>
+                            <div class="wrapper">
+                                
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    {% if error %}
+<script type="text/javascript">
+  swal("Error!", "{{error}}", "error");
+</script>
+{% endif %}
+
+{% if success %}
+<script type="text/javascript">
+  swal("Congrats!", "{{success}}", "success");
+</script>
+{% endif %}
+
+{% if info %}
+<script type="text/javascript">
+  swal("Information!", "{{info}}", "info");
+</script>
+{% endif %}
+
+   {% endblock %}

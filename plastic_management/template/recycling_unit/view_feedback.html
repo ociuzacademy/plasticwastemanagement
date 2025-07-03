@@ -1,0 +1,66 @@
+{% extends 'recycling_unit/header_footer.html' %}
+    
+{% block content %}
+
+<!-- Content Wrapper -->
+<div class="content-wrapper">
+    <!-- Page Header -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">View Feedback</h1>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="/recyclingunit_home/"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">View Feedback</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Feedback for Your Unit</h3>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-hover text-center">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Customer Name</th>
+                                <th>Product</th>
+                                <th>Feedback</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for feedback in feedbacks %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ feedback.user_id.name }}</td>
+                                    <td>{{ feedback.product_id.name }}</td>
+
+                                    <td>{{ feedback.feedback }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">No feedback available.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+{% endblock %}

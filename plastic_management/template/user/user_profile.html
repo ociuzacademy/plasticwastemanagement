@@ -1,0 +1,58 @@
+ {% extends 'user/header_footer.html' %}
+{% block content %}
+
+
+
+    <!-- ===========================
+    =====>> Trainers Single <<===== -->
+    <section id="trainers-single-area" class="pt-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-5">
+                    <div class="trainers-single-img">
+                        <img src="/static/assets/img/img/im2.png" alt="">
+                    </div>
+                </div>
+                <div class="col-lg-7 offset-lg-1 col-md-7 offset-md-0">
+                   
+
+                        <div class="trainers-information">
+                            <ul>
+                                {% for x in db %}
+                                <li><span>Name:</span> : {{x.name}}</li>
+                                <li><span>Registred Email:</span> : {{x.email}}</li>
+                                <li><span>Address</span> : {{x.address}}</li>
+                                <li><span>Phone</span> : +91 {{x.mobile_Number}}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- =====>> End Trainers Single <<===== 
+    =========================== -->
+
+     <section id="cta-area" class="cta-bg1 pt-80 pb-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="cta-left">
+                        <h2>
+We Sell Plastic Products</h2>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="cta-btn ">
+                        <a href="/my_order/" class="btn btn-1">My order</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===========================
+    =====>> Cta <<===== -->
+   
+ {% endblock %}

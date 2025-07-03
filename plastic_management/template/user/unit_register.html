@@ -1,0 +1,99 @@
+
+{% extends 'user/baseheader_footer.html' %}
+    
+{% block content %}
+
+
+
+ <section id="my-account-area" class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="my-account-content">
+                        <h2>Register Now....</h2>
+                        <form class="my-account-form" method="POST" action="/unit_registration/">
+                {% csrf_token %}
+                            <label for="username">Unit name *</label>
+                            <input type="text" id="username" name="Uname" required="required">
+                            <label for="username">Email *</label>
+                            <input type="email" id="username" name="email" required="">
+
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="psw" required="">
+
+                            <label for="password">Confirm Password *</label>
+                            <input type="password" id="password" name="cnfpsw" required="">
+
+
+                            
+
+
+                            <label for="password">Address *</label>
+                            <input type="text" id="password" name="adss" required="">
+
+                            <label for="password">District *</label>
+                            <label for="password"></label>
+
+                            <select name="place" class="form-control" required="">
+                            <option disabled selected>Select District </option>
+                
+                            <option value="alappuzha">Alappuzha</option>
+                            <option value="ernakulam">Ernakulam</option>
+
+                            <option value="idukki">Idukki</option>
+
+                            <option value="kannur">Kannur</option>
+
+                            <option value="kasaragod">Kasaragod</option>
+                            <option value="kollam">Kollam</option>
+                            <option value="kottayam">Kottayam</option>
+                            <option value="kozhikode">Kozhikode</option>
+                            <option value="malappuram">Malappuram</option>
+                            <option value="palakkad">Palakkad</option>
+                            <option value="pathanamthitta">Pathanamthitta</option>
+                            <option value="thiruvananthapuram">Thiruvananthapuram</option>
+                            <option value="thrissur">Thrissur</option>
+                             <option value="wayanad"> Wayanad</option>
+                            
+                            </select>
+                            <label for="password"></label>
+                            
+
+                            <label for="password">Phone Number *</label>
+                            <input type="text" id="password" name="pno" required="" maxlength="10">
+
+                            <label for="password">Capacity *</label>
+                            <input type="text" id="password" name="capa" required="">
+                            <label for="password">Unit Licence number *</label>
+                            <input type="text" id="password" name="Lno" required="" maxlength="6">
+                            <button type="submit" class="btn">Submit </button>
+                            <div class="wrapper">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    {% if error %}
+<script type="text/javascript">
+  swal("Error!", "{{error}}", "error");
+</script>
+{% endif %}
+
+{% if success %}
+<script type="text/javascript">
+  swal("Congrats!", "{{success}}", "success");
+</script>
+{% endif %}
+
+{% if info %}
+<script type="text/javascript">
+  swal("Information!", "{{info}}", "info");
+</script>
+{% endif %}
+
+   {% endblock %}

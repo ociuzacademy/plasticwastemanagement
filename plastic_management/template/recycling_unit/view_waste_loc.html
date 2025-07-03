@@ -1,0 +1,92 @@
+
+{% extends 'recycling_unit/header_footer.html' %}
+    
+{% block content %}
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">View Waste location</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        
+<section class="content">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Allocate Works</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                  <th>Subject</th>
+                  <th>Address</th>
+                  <th>Description</th>
+                  <th>District</th>
+                  <th>Place</th>
+                  <th colspan="2">Work Allocation</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for x in db  %}
+
+                <tr>
+                  <td>{{x.subject}}</td>
+                  <td>{{x.address}}</td>
+                  <td>{{x.description}}</td>
+                  <td>{{x.district}}</td>
+                  <td>{{x.place}}</td>
+                  <td><a href="/allocate_work/?id={{x.id}}">Allocate</a></td>
+                  <!-- <td><a href="/reject_unit/?id={{x.id}}">reject</a></td> -->
+                </tr>
+                {% endfor %}
+               
+               
+                </tbody>
+                
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+
+          
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </section>
+
+        
+        <!-- /.row (main row) -->
+      </div><!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+  {% endblock %}

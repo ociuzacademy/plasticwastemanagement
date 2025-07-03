@@ -1,0 +1,36 @@
+{% extends 'user/header_footer.html' %}
+{% block content %}
+ 
+
+  <!-- ===========================
+    =====>> Shop <<===== -->
+    <section id="shop-area" class="shop-gallery pt-100 pb-150">
+        <div class="container">
+            <div class="row">
+                {% for x in db %}
+                <!-- Shop Item -->
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="shop-box effect-item pt-50">
+                        <div class="shop-item position-relative content-overlay">
+                            <img src="{{x.image.url}}" alt="">
+                            <div class="content-details fadeIn-top">
+                                <ul>
+                                    <!-- <li><a href="/add_to_cart/?id={{x.id}}"><i class="fas fa-shopping-cart"></i></a></li> -->
+                                    <li><a href="/product_detail_view/?id={{x.id}}" title="buy"><i class="fas fa-plus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="shop-title text-center">
+                            <h3><a href="#">{{x.name}}</a></h3>
+                            <p>₹
+{{x.price}}</p>
+                        </div>
+                    </div>
+                </div>
+               {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- =====>> End Shop <<===== 
+    =========================== -->
+   {% endblock %}

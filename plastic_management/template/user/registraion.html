@@ -1,0 +1,85 @@
+
+{% extends 'user/baseheader_footer.html' %}
+    
+{% block content %}
+
+
+
+ <section id="my-account-area" class="pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="my-account-content">
+                        <h2>Register Now....</h2>
+                        <form class="my-account-form" method="POST" action="/user_registration/">
+                {% csrf_token %}
+                            <label for="username">Username *</label>
+                            <input type="text" id="username" name="Username" required="required" autocomplete="off">
+                            <label for="username">Email *</label>
+                            <input type="email" id="username" name="email" required="">
+
+                            <label for="password">Password *</label>
+                            <input type="password" id="password" name="psw" required="">
+
+                            <label for="password">Confirm Password *</label>
+                            <input type="password" id="password" name="cnfpsw" required="">
+
+
+                            <label for="username">Gender *</label>
+                            <label for="password"></label>
+
+                            <select name="gender" class="form-control" required="">
+                            <option disabled selected>Select Gender </option>
+                
+                            <option value="male">Male</option>
+                             <option value="female">Female</option>
+                            <option value="other">Other</option>
+                            </select>
+                           <label for="password"></label>
+
+
+                            <label for="password">Address *</label>
+                            <input type="text" id="password" name="adss" required="" >
+
+                            <label for="password">Place *</label>
+                            <input type="text" id="password" name="place" required="">
+
+                            <label for="password">Phone Number *</label>
+                            <input type="text" id="password" name="pno" required="" pattern="[1-9]{1}[0-9]{9}" maxlength="10">
+                             <label for="password">Aadhar Number *</label>
+                            <input type="text" id="password" name="adr" required=""    maxlength="12">
+
+                            <button type="submit" class="btn">Submit </button>
+                            <div class="wrapper">
+                                <input id="a11y-issue-1" name="a11y-issues" type="checkbox" value="no-issues">
+                                <label for="a11y-issue-1">There are no issues.</label>
+                            </div>
+                            <a href="#">Lost your password?</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    {% if error %}
+<script type="text/javascript">
+  swal("Error!", "{{error}}", "error");
+</script>
+{% endif %}
+
+{% if success %}
+<script type="text/javascript">
+  swal("Congrats!", "{{success}}", "success");
+</script>
+{% endif %}
+
+{% if info %}
+<script type="text/javascript">
+  swal("Information!", "{{info}}", "info");
+</script>
+{% endif %}
+
+   {% endblock %}
