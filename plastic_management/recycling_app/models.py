@@ -96,7 +96,14 @@ class waste_location_tb(models.Model):
 	district=models.CharField(max_length=30,default='')
 	worker_email=models.CharField(max_length=30,default='')
 	status=models.CharField(max_length=30,default='')
+	waste_image = models.ImageField(upload_to='waste_images/',null=True,blank=True)
+	ai_waste_type = models.CharField(max_length=100,null=True,blank=True)
+	ai_material = models.CharField(max_length=100,null=True,blank=True)
+	ai_confidence = models.FloatField(null=True,blank=True)
+	ai_recyclable = models.BooleanField(null=True,blank=True)
+	ai_result = models.TextField(null=True,blank=True)
 
+	
 class feedback_tb(models.Model):
 	user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
 	product_id=models.ForeignKey(product_tb,on_delete=models.CASCADE)
