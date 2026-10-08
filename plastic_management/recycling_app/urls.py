@@ -59,7 +59,8 @@ path('view_feedback/', views.view_feedback, name='view_feedback'),
 	path('rejected_unit_list/',views.rejected_unit_list),
 	path('approved_user_list/',views.approved_user_list),
 	path('approved_unit_list/',views.approved_unit_list),
-
+	path('admin_waste_reports/', views.admin_waste_reports),
+	path('admin_waste_image/', views.admin_waste_image),	
 
 
 #--------------------workers url----------------
