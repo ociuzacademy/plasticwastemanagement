@@ -1,99 +1,624 @@
 
 {% extends 'user/baseheader_footer.html' %}
-    
+
 {% block content %}
 
+<style>
+    .recycler-page {
+        background: #f1f8f3;
+        padding: 60px 0;
+    }
 
+    .recycler-layout {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 24px;
+        max-width: 1400px;
+        margin: auto;
+        padding: 0 20px;
+    }
 
- <section id="my-account-area" class="pt-150 pb-150">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2">
-                    <div class="my-account-content">
-                        <h2>Register Now....</h2>
-                        <form class="my-account-form" method="POST" action="/unit_registration/">
-                {% csrf_token %}
-                            <label for="username">Unit name *</label>
-                            <input type="text" id="username" name="Uname" required="required">
-                            <label for="username">Email *</label>
-                            <input type="email" id="username" name="email" required="">
+    .recycler-sidebar {
+        background: linear-gradient(160deg, #e4f6df, #c8e9cc);
+        border-radius: 18px;
+        padding: 35px 25px;
+        color: #124c38;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 700px;
+    }
 
-                            <label for="password">Password *</label>
-                            <input type="password" id="password" name="psw" required="">
+    .recycler-sidebar h2 {
+        color: #124c38;
+        font-weight: 800;
+        font-size: 30px;
+        margin: 20px 0 12px;
+    }
 
-                            <label for="password">Confirm Password *</label>
-                            <input type="password" id="password" name="cnfpsw" required="">
+    .recycler-sidebar p {
+        line-height: 1.7;
+        color: #315749;
+    }
 
+    .benefit {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin: 24px 0;
+        color: #234d3d;
+        font-weight: 500;
+    }
 
-                            
+    .benefit-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background: #ffffffb8;
+        font-size: 22px;
+    }
 
+    .recycler-quote {
+        background: #075b40;
+        color: white;
+        padding: 20px;
+        border-radius: 14px;
+        font-weight: 600;
+        text-align: center;
+        margin-top: 35px;
+    }
 
-                            <label for="password">Address *</label>
-                            <input type="text" id="password" name="adss" required="">
+    .registration-card {
+        background: #fff;
+        border-radius: 18px;
+        padding: 35px;
+        box-shadow: 0 10px 35px rgba(21, 74, 48, 0.08);
+    }
 
-                            <label for="password">District *</label>
-                            <label for="password"></label>
+    .registration-heading {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+        margin-bottom: 28px;
+    }
 
-                            <select name="place" class="form-control" required="">
-                            <option disabled selected>Select District </option>
-                
-                            <option value="alappuzha">Alappuzha</option>
-                            <option value="ernakulam">Ernakulam</option>
+    .registration-heading .heading-icon {
+        font-size: 38px;
+        color: #08734e;
+    }
 
-                            <option value="idukki">Idukki</option>
+    .registration-heading h1 {
+        font-size: 30px;
+        color: #124c38;
+        font-weight: 800;
+        margin-bottom: 6px;
+    }
 
-                            <option value="kannur">Kannur</option>
+    .registration-heading p {
+        color: #718096;
+        margin: 0;
+    }
 
-                            <option value="kasaragod">Kasaragod</option>
-                            <option value="kollam">Kollam</option>
-                            <option value="kottayam">Kottayam</option>
-                            <option value="kozhikode">Kozhikode</option>
-                            <option value="malappuram">Malappuram</option>
-                            <option value="palakkad">Palakkad</option>
-                            <option value="pathanamthitta">Pathanamthitta</option>
-                            <option value="thiruvananthapuram">Thiruvananthapuram</option>
-                            <option value="thrissur">Thrissur</option>
-                             <option value="wayanad"> Wayanad</option>
-                            
-                            </select>
-                            <label for="password"></label>
-                            
+    .form-section-title {
+        background: #eef8f1;
+        border-radius: 10px;
+        padding: 13px 16px;
+        margin: 26px 0 20px;
+        color: #086342;
+        font-weight: 700;
+    }
 
-                            <label for="password">Phone Number *</label>
-                            <input type="text" id="password" name="pno" required="" maxlength="10">
+    .form-section-title small {
+        display: block;
+        color: #718096;
+        font-weight: 400;
+        margin-top: 4px;
+    }
 
-                            <label for="password">Capacity *</label>
-                            <input type="text" id="password" name="capa" required="">
-                            <label for="password">Unit Licence number *</label>
-                            <input type="text" id="password" name="Lno" required="" maxlength="6">
-                            <button type="submit" class="btn">Submit </button>
-                            <div class="wrapper">
-                            </div>
-                        </form>
-                    </div>
+    .registration-card label {
+        display: block;
+        font-weight: 600;
+        font-size: 14px;
+        color: #283747;
+        margin-bottom: 8px;
+    }
+
+    .registration-card .form-control {
+        min-height: 46px;
+        border: 1px solid #d4dce5;
+        border-radius: 8px;
+        padding: 10px 13px;
+        width: 100%;
+        background: #fff;
+        box-sizing: border-box;
+        margin-bottom: 18px;
+    }
+
+    .registration-card textarea.form-control {
+        min-height: 75px;
+    }
+
+    .registration-card .form-control:focus {
+        border-color: #16815c;
+        box-shadow: 0 0 0 3px rgba(22, 129, 92, 0.1);
+        outline: none;
+    }
+
+    .field-row {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .waste-options {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .waste-option {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        padding: 14px;
+        border-radius: 9px;
+        border: 1px solid #e0e8e2;
+        background: #f8fbf8;
+        cursor: pointer;
+        margin: 0 !important;
+    }
+
+    .waste-option input {
+        width: 17px;
+        height: 17px;
+        accent-color: #08734e;
+    }
+
+    .waste-option span {
+        font-weight: 500;
+    }
+
+    .availability-option {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        margin: 8px 0 18px !important;
+    }
+
+    .availability-option input {
+        width: 18px;
+        height: 18px;
+        accent-color: #08734e;
+    }
+
+    .field-help {
+        display: block;
+        color: #718096;
+        font-size: 12px;
+        margin-top: -10px;
+        margin-bottom: 18px;
+    }
+
+    .register-button {
+        width: 100%;
+        padding: 15px;
+        background: #08734e;
+        border: none;
+        border-radius: 9px;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .register-button:hover {
+        background: #065b3d;
+    }
+
+    .required-mark {
+        color: #dc3545;
+    }
+
+    @media (max-width: 900px) {
+        .recycler-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .recycler-sidebar {
+            min-height: auto;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .registration-card {
+            padding: 20px;
+        }
+
+        .field-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .registration-heading h1 {
+            font-size: 23px;
+        }
+
+        .waste-options {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+<section class="recycler-page">
+    <div class="recycler-layout">
+
+        <!-- Left information panel -->
+        <aside class="recycler-sidebar">
+
+            <div>
+                <div style="font-size: 45px;">🌱</div>
+
+                <h2>Join as a Recycling Unit</h2>
+
+                <p>
+                    Partner with us for a cleaner and greener tomorrow.
+                </p>
+
+                <div class="benefit">
+                    <div class="benefit-icon">♻️</div>
+                    <span>Receive waste collection requests</span>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">🏭</div>
+                    <span>Manage your recycling capacity</span>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">📍</div>
+                    <span>Get matched with waste reports</span>
+                </div>
+
+                <div class="benefit">
+                    <div class="benefit-icon">🤝</div>
+                    <span>Help build a sustainable community</span>
                 </div>
             </div>
+
+            <div class="recycler-quote">
+                “Recycle Today for a Better Tomorrow”
+            </div>
+
+        </aside>
+
+        <!-- Registration form -->
+        <div class="registration-card">
+
+            <div class="registration-heading">
+                <div class="heading-icon">♻️</div>
+
+                <div>
+                    <h1>Recycling Unit Registration</h1>
+                    <p>
+                        Register your recycling unit and contribute
+                        to a cleaner environment.
+                    </p>
+                </div>
+            </div>
+
+            {% if error %}
+                <div class="alert alert-danger">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form
+                class="my-account-form"
+                method="POST"
+                action="/unit_registration/"
+            >
+                {% csrf_token %}
+
+                <!-- Basic Information -->
+                <div class="form-section-title">
+                    1. Basic Information
+                    <small>Provide your unit details</small>
+                </div>
+
+                <div class="field-row">
+                    <div>
+                        <label for="unit_name">
+                            Unit Name <span class="required-mark">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="unit_name"
+                            name="Uname"
+                            class="form-control"
+                            placeholder="Enter your unit name"
+                            maxlength="30"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="email">
+                            Email Address <span class="required-mark">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter your email address"
+                            maxlength="50"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div>
+                        <label for="password">
+                            Password <span class="required-mark">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="psw"
+                            class="form-control"
+                            placeholder="Enter password"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="confirm_password">
+                            Confirm Password <span class="required-mark">*</span>
+                        </label>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="cnfpsw"
+                            class="form-control"
+                            placeholder="Confirm password"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <!-- Location Details -->
+                <div class="form-section-title">
+                    2. Location Details
+                    <small>Tell us where your unit is located</small>
+                </div>
+
+                <label for="address">
+                    Address <span class="required-mark">*</span>
+                </label>
+                <textarea
+                    id="address"
+                    name="adss"
+                    class="form-control"
+                    placeholder="Enter complete address"
+                    maxlength="30"
+                    required
+                ></textarea>
+
+                <label for="district">
+                    District <span class="required-mark">*</span>
+                </label>
+
+                <select
+                    id="district"
+                    name="place"
+                    class="form-control"
+                    required
+                >
+                    <option value="" selected disabled>Select District</option>
+                    <option value="alappuzha">Alappuzha</option>
+                    <option value="ernakulam">Ernakulam</option>
+                    <option value="idukki">Idukki</option>
+                    <option value="kannur">Kannur</option>
+                    <option value="kasaragod">Kasaragod</option>
+                    <option value="kollam">Kollam</option>
+                    <option value="kottayam">Kottayam</option>
+                    <option value="kozhikode">Kozhikode</option>
+                    <option value="malappuram">Malappuram</option>
+                    <option value="palakkad">Palakkad</option>
+                    <option value="pathanamthitta">Pathanamthitta</option>
+                    <option value="thiruvananthapuram">Thiruvananthapuram</option>
+                    <option value="thrissur">Thrissur</option>
+                    <option value="wayanad">Wayanad</option>
+                </select>
+
+                <!-- Waste Handling Details -->
+                <div class="form-section-title">
+                    3. Waste Handling Details
+                    <small>
+                        Specify accepted waste types and available capacity
+                    </small>
+                </div>
+
+                <div class="field-row">
+
+                    <div>
+                        <label>
+                            Waste Types Accepted
+                            <span class="required-mark">*</span>
+                        </label>
+
+                        <div class="waste-options">
+                            <label class="waste-option">
+                                <input
+                                    type="checkbox"
+                                    name="accepted_waste_types"
+                                    value="Plastic"
+                                >
+                                <span>♻️ Plastic</span>
+                            </label>
+
+                            <label class="waste-option">
+                                <input
+                                    type="checkbox"
+                                    name="accepted_waste_types"
+                                    value="Paper"
+                                >
+                                <span>📄 Paper</span>
+                            </label>
+
+                            <label class="waste-option">
+                                <input
+                                    type="checkbox"
+                                    name="accepted_waste_types"
+                                    value="Glass"
+                                >
+                                <span>🥛 Glass</span>
+                            </label>
+
+                            <label class="waste-option">
+                                <input
+                                    type="checkbox"
+                                    name="accepted_waste_types"
+                                    value="Metal"
+                                >
+                                <span>⚙️ Metal</span>
+                            </label>
+
+                            <label class="waste-option">
+                                <input
+                                    type="checkbox"
+                                    name="accepted_waste_types"
+                                    value="Organic"
+                                >
+                                <span>🌿 Organic Waste</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="available_capacity_kg">
+                            Available Capacity (kg)
+                            <span class="required-mark">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="available_capacity_kg"
+                            name="available_capacity_kg"
+                            class="form-control"
+                            placeholder="Enter available capacity"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                        <small class="field-help">
+                            Amount of waste in kilograms your unit can
+                            currently accept.
+                        </small>
+
+                        <label for="is_available">
+                            Availability
+                            <span class="required-mark">*</span>
+                        </label>
+
+                        <label class="availability-option">
+                            <input
+                                type="checkbox"
+                                id="is_available"
+                                name="is_available"
+                                value="true"
+                                checked
+                            >
+                            <span>Available for Waste Collection</span>
+                        </label>
+
+                        <small class="field-help">
+                            Uncheck if your unit is currently not accepting waste.
+                        </small>
+                    </div>
+
+                </div>
+
+                <!-- Other Details -->
+                <div class="form-section-title">
+                    4. Other Details
+                    <small>Complete your contact and licence information</small>
+                </div>
+
+                <div class="field-row">
+                    <div>
+                        <label for="phone">
+                            Phone Number <span class="required-mark">*</span>
+                        </label>
+                        <input
+                            type="tel"
+                            id="phone"
+                            name="pno"
+                            class="form-control"
+                            placeholder="Enter 10-digit phone number"
+                            pattern="[0-9]{10}"
+                            maxlength="10"
+                            required
+                        >
+                    </div>
+
+                    <div>
+                        <label for="capacity">
+                            Total Unit Capacity
+                            <span class="required-mark">*</span>
+                        </label>
+                        <input
+                            type="number"
+                            id="capacity"
+                            name="capa"
+                            class="form-control"
+                            placeholder="Enter total unit capacity"
+                            min="0"
+                            required
+                        >
+                    </div>
+                </div>
+
+                <label for="licence">
+                    Unit Licence Number <span class="required-mark">*</span>
+                </label>
+                <input
+                    type="text"
+                    id="licence"
+                    name="Lno"
+                    class="form-control"
+                    placeholder="Enter unit licence number"
+                    maxlength="6"
+                    required
+                >
+
+                <button type="submit" class="register-button">
+                    ➤ &nbsp; Register Now
+                </button>
+
+            </form>
+
         </div>
-    </section>
-
-
-
-    {% if error %}
-<script type="text/javascript">
-  swal("Error!", "{{error}}", "error");
-</script>
-{% endif %}
+    </div>
+</section>
 
 {% if success %}
-<script type="text/javascript">
-  swal("Congrats!", "{{success}}", "success");
-</script>
+    <script>
+        swal("Registration Successful!", "{{ success|escapejs }}", "success");
+    </script>
 {% endif %}
 
 {% if info %}
-<script type="text/javascript">
-  swal("Information!", "{{info}}", "info");
-</script>
+    <script>
+        swal("Information!", "{{ info|escapejs }}", "info");
+    </script>
 {% endif %}
 
-   {% endblock %}
+{% endblock %}
