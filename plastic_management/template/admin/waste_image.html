@@ -1,3 +1,4 @@
+
 {% extends 'admin/header_footer.html' %}
 
 {% block content %}
@@ -6,27 +7,20 @@
 
     <div class="content-header">
         <div class="container-fluid">
-            <h1 class="m-0 text-dark">
-                Manage Waste
-            </h1>
+            <h1 class="m-0 text-dark">Manage Waste</h1>
         </div>
     </div>
 
     <section class="content">
-
         <div class="container-fluid">
 
+            <!-- Waste Report Details -->
             <div class="card">
-
                 <div class="card-header">
-                    <h3 class="card-title">
-                        Waste Report Details
-                    </h3>
+                    <h3 class="card-title">Waste Report Details</h3>
                 </div>
 
                 <div class="card-body">
-
-                    <!-- Waste Report Details -->
 
                     <p>
                         <strong>User:</strong>
@@ -53,58 +47,223 @@
                         {{ waste.district }}
                     </p>
 
-
                     <hr>
 
-
                     <!-- Upload Waste Image -->
-
                     <h4>Upload Waste Image</h4>
 
-                    <form method="POST"
-                          enctype="multipart/form-data">
-
+                    <form method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
 
-                        <input type="file"
-                               name="waste_image"
-                               accept="image/*"
-                               class="form-control">
+                        <div class="form-group">
+                            <input
+                                type="file"
+                                name="waste_image"
+                                accept="image/jpeg,image/png,image/webp"
+                                class="form-control"
+                                required
+                            >
+                        </div>
 
-                        <br>
-
-                        <button type="submit"
-                                class="btn btn-primary">
-
-                            Upload Image
-
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i>
+                            Upload & Analyze with AI
                         </button>
-
                     </form>
 
+                    {% if ai_error %}
+                        <div class="alert alert-danger mt-3">
+                            {{ ai_error }}
+                        </div>
+                    {% endif %}
 
-                    <!-- Display Uploaded Image -->
-
+                    <!-- Uploaded Image -->
                     {% if waste.waste_image %}
-
                         <hr>
 
                         <h4>Uploaded Waste Image</h4>
 
-                        <br>
-
-                        <img src="{{ waste.waste_image.url }}"
-                             style="max-width:400px; max-height:400px; border-radius:10px; border:1px solid #ddd;">
-
+                        <div class="mt-3 mb-3">
+                            <img
+                                src="{{ waste.waste_image.url }}"
+                                alt="Uploaded waste"
+                                style="
+                                    max-width: 100%;
+                                    width: 400px;
+                                    max-height: 400px;
+                                    object-fit: contain;
+                                    border-radius: 10px;
+                                    border: 1px solid #ddd;
+                                    padding: 5px;
+                                "
+                            >
+                        </div>
                     {% endif %}
 
-
                 </div>
-
             </div>
 
-        </div>
+            <!-- Gemini AI Results -->
+            {% if waste.ai_waste_type or waste.ai_material or waste.ai_result %}
 
+                <div class="card card-info">
+
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <i class="fas fa-brain"></i>
+                            Gemini AI Waste Identification
+                        </h3>
+                    </div>
+
+                    <div class="card-body">
+
+                        <!-- Overall Results -->
+                        <h4>Overall Analysis</h4>
+
+                        <p>
+                            <strong>Waste Types:</strong>
+                            {{ waste.ai_waste_type|default:"Not identified" }}
+                        </p>
+
+                        <p>
+                            <strong>Materials:</strong>
+                            {{ waste.ai_material|default:"Unknown" }}
+                        </p>
+
+                        <p>
+                            <strong>Average Confidence Estimate:</strong>
+
+                            {% if waste.ai_confidence != None %}
+                                {{ waste.ai_confidence|floatformat:2 }}%
+                            {% else %}
+                                Not available
+                            {% endif %}
+                        </p>
+
+                        <p>
+                            <strong>Overall Recyclability:</strong>
+
+                            {% if waste.ai_recyclable == True %}
+                                <span class="badge badge-success">Yes</span>
+                            {% elif waste.ai_recyclable == False %}
+                                <span class="badge badge-danger">No</span>
+                            {% else %}
+                                <span class="badge badge-secondary">
+                                    Mixed / Unknown
+                                </span>
+                            {% endif %}
+                        </p>
+
+                        <hr>
+
+                        <!-- AI Summary -->
+                        <h4>AI Summary</h4>
+
+                        <p>
+                            {{ ai_summary|default:"No summary available." }}
+                        </p>
+
+                        <!-- Multiple Detected Items -->
+                        {% if ai_items %}
+
+                            <hr>
+
+                            <h4>Detected Waste Items</h4>
+
+                            <p class="text-muted">
+                                Items identified by Gemini from the uploaded image.
+                            </p>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Waste Item</th>
+                                            <th>Material</th>
+                                            <th>Polymer</th>
+                                            <th>Confidence</th>
+                                            <th>Recyclable</th>
+                                            <th>Observation</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        {% for item in ai_items %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+
+                                                <td>
+                                                    {{ item.name|default:"Unknown" }}
+                                                </td>
+
+                                                <td>
+                                                    {{ item.material|default:"Unknown" }}
+                                                </td>
+
+                                                <td>
+                                                    {{ item.polymer|default:"Unknown" }}
+                                                </td>
+
+                                                <td>
+                                                    {% if item.confidence != None %}
+                                                        {{ item.confidence|floatformat:1 }}%
+                                                    {% else %}
+                                                        Not available
+                                                    {% endif %}
+                                                </td>
+
+                                                <td>
+                                                    {% if item.recyclable == True %}
+                                                        <span class="badge badge-success">
+                                                            Yes
+                                                        </span>
+                                                    {% elif item.recyclable == False %}
+                                                        <span class="badge badge-danger">
+                                                            No
+                                                        </span>
+                                                    {% else %}
+                                                        <span class="badge badge-secondary">
+                                                            Unknown
+                                                        </span>
+                                                    {% endif %}
+                                                </td>
+
+                                                <td>
+                                                    {{ item.reason|default:"No additional details." }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                        {% else %}
+
+                            <div class="alert alert-info">
+                                This report does not have structured
+                                multiple-item results yet. Upload the image
+                                again to run the updated AI analysis.
+                            </div>
+
+                        {% endif %}
+
+                        <hr>
+
+                        <p class="text-muted">
+                            AI predictions are estimates, not verified
+                            material tests. Confirm the results before
+                            assigning waste to a recycler.
+                        </p>
+
+                    </div>
+                </div>
+
+            {% endif %}
+
+        </div>
     </section>
 
 </div>
