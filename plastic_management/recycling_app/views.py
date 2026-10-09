@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.http import HttpResponse,HttpResponseRedirect
@@ -433,6 +433,46 @@ def reject_unit(request):
 	else:
 		return render(request,'admin/login.html')
 
+def admin_waste_reports(request):
+    if request.session.get('id') is not None:
+
+        waste_reports = waste_location_tb.objects.all().order_by('-id')
+
+        return render(
+            request,
+            'admin/waste_reports.html',
+            {'db': waste_reports}
+        )
+
+    else:
+        return render(request, 'admin/login.html')
+
+def admin_waste_image(request):
+
+    if request.session.get('id') is not None:
+
+        waste_id = request.GET.get('id')
+        waste = waste_location_tb.objects.get(id=waste_id)
+
+        if request.method == 'POST':
+
+            image = request.FILES.get('waste_image')
+
+            if image:
+                waste.waste_image = image
+                waste.save()
+
+            return redirect('/admin_waste_image/?id=' + str(waste.id))
+
+        return render(
+            request,
+            'admin/waste_image.html',
+            {'waste': waste}
+        )
+
+    else:
+        return render(request, 'admin/login.html')
+			
 #-----------------------------recycling unit functions-----------------------
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)
 def remove_staff(request):

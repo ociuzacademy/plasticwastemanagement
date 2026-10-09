@@ -1,0 +1,112 @@
+{% extends 'admin/header_footer.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <h1 class="m-0 text-dark">
+                Manage Waste
+            </h1>
+        </div>
+    </div>
+
+    <section class="content">
+
+        <div class="container-fluid">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Waste Report Details
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Waste Report Details -->
+
+                    <p>
+                        <strong>User:</strong>
+                        {{ waste.user_id.name }}
+                    </p>
+
+                    <p>
+                        <strong>Subject:</strong>
+                        {{ waste.subject }}
+                    </p>
+
+                    <p>
+                        <strong>Description:</strong>
+                        {{ waste.description }}
+                    </p>
+
+                    <p>
+                        <strong>Place:</strong>
+                        {{ waste.place }}
+                    </p>
+
+                    <p>
+                        <strong>District:</strong>
+                        {{ waste.district }}
+                    </p>
+
+
+                    <hr>
+
+
+                    <!-- Upload Waste Image -->
+
+                    <h4>Upload Waste Image</h4>
+
+                    <form method="POST"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+
+                        <input type="file"
+                               name="waste_image"
+                               accept="image/*"
+                               class="form-control">
+
+                        <br>
+
+                        <button type="submit"
+                                class="btn btn-primary">
+
+                            Upload Image
+
+                        </button>
+
+                    </form>
+
+
+                    <!-- Display Uploaded Image -->
+
+                    {% if waste.waste_image %}
+
+                        <hr>
+
+                        <h4>Uploaded Waste Image</h4>
+
+                        <br>
+
+                        <img src="{{ waste.waste_image.url }}"
+                             style="max-width:400px; max-height:400px; border-radius:10px; border:1px solid #ddd;">
+
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}

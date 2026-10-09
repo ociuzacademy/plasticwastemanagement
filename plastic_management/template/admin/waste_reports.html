@@ -1,0 +1,123 @@
+{% extends 'admin/header_footer.html' %}
+
+{% block content %}
+
+<div class="content-wrapper">
+
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">
+                        Waste Reports
+                    </h1>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <section class="content">
+
+        <div class="container-fluid">
+
+            <div class="card">
+
+                <div class="card-header">
+                    <h3 class="card-title">
+                        User Waste Reports
+                    </h3>
+                </div>
+
+                <div class="card-body">
+
+                    <table class="table table-bordered table-hover">
+
+                        <thead>
+
+                            <tr>
+                                <th>User</th>
+                                <th>Subject</th>
+                                <th>Description</th>
+                                <th>Place</th>
+                                <th>District</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for x in db %}
+
+                            <tr>
+
+                                <td>
+                                    {{ x.user_id.name }}
+                                </td>
+
+                                <td>
+                                    {{ x.subject }}
+                                </td>
+
+                                <td>
+                                    {{ x.description }}
+                                </td>
+
+                                <td>
+                                    {{ x.place }}
+                                </td>
+
+                                <td>
+                                    {{ x.district }}
+                                </td>
+
+                                <td>
+                                    {{ x.status }}
+                                </td>
+
+                                <td>
+
+                                    <a href="/admin_waste_image/?id={{ x.id }}"
+                                       class="btn btn-primary btn-sm">
+
+                                        Manage Waste
+
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% empty %}
+
+                            <tr>
+
+                                <td colspan="7" class="text-center">
+
+                                    No waste reports found.
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
