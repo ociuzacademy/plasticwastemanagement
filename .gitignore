@@ -27,3 +27,6 @@ media/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Local AI testing images
+plastic_images/
