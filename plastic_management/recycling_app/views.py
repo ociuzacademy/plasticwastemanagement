@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse,HttpResponseRedirect
 from datetime import date
 from datetime import datetime
-
+from .gemini_service import identify_waste
 from .models import register_tb,unit_register_tb,waste_location_tb,feedback_tb,workers_register_tb,product_tb,cart_tb,order_tb,order_item_tb
 from django.views.decorators.cache import cache_control
 # Create your views here.
@@ -447,32 +447,120 @@ def admin_waste_reports(request):
     else:
         return render(request, 'admin/login.html')
 
+
+import json
+
+from django.shortcuts import render, redirect, get_object_or_404
+
+from .models import waste_location_tb
+from .gemini_service import identify_waste
+
+
 def admin_waste_image(request):
 
-    if request.session.get('id') is not None:
+    # Check admin login
+    if request.session.get('id') is None:
+        return render(request, 'admin/login.html')
 
-        waste_id = request.GET.get('id')
-        waste = waste_location_tb.objects.get(id=waste_id)
+    waste_id = request.GET.get('id')
 
-        if request.method == 'POST':
+    # Get the selected waste report
+    waste = get_object_or_404(
+        waste_location_tb,
+        id=waste_id
+    )
 
-            image = request.FILES.get('waste_image')
+    ai_error = None
 
-            if image:
+    # Handle image upload
+    if request.method == 'POST':
+
+        image = request.FILES.get('waste_image')
+
+        if not image:
+            ai_error = "Please select a waste image to upload."
+
+        elif not image.content_type or not image.content_type.startswith('image/'):
+            ai_error = "Please upload a valid image file."
+
+        else:
+            try:
+                # Save uploaded image first
                 waste.waste_image = image
                 waste.save()
 
-            return redirect('/admin_waste_image/?id=' + str(waste.id))
+                # Analyze image using Gemini Vision
+                ai_data = identify_waste(waste.waste_image)
 
-        return render(
-            request,
-            'admin/waste_image.html',
-            {'waste': waste}
-        )
+                # Save AI identification results
+                waste.ai_waste_type = ai_data['waste_type']
+                waste.ai_material = ai_data['material']
+                waste.ai_confidence = ai_data['confidence']
+                waste.ai_recyclable = ai_data['recyclable']
+                waste.ai_result = ai_data['result']
 
-    else:
-        return render(request, 'admin/login.html')
-			
+                waste.save()
+
+                # Redirect to display the saved results
+                return redirect(
+                    f'/admin_waste_image/?id={waste.id}'
+                )
+
+            except Exception:
+                import logging
+
+                logging.getLogger(__name__).exception(
+                    "Gemini waste analysis failed for report %s",
+                    waste.id
+                )
+
+                ai_error = (
+                    "Image uploaded, but AI analysis failed. "
+                    "Please check the server terminal logs and try again."
+                )
+
+    # Prepare saved AI results for the template
+    ai_items = []
+    ai_summary = ""
+
+    if waste.ai_result:
+
+        try:
+            saved_result = json.loads(waste.ai_result)
+
+            if isinstance(saved_result, dict):
+                items = saved_result.get('items', [])
+
+                if isinstance(items, list):
+                    ai_items = [
+                        item for item in items
+                        if isinstance(item, dict)
+                    ]
+
+                ai_summary = saved_result.get('summary', '')
+
+            else:
+                # Support older plain-text results
+                ai_summary = waste.ai_result
+
+        except (json.JSONDecodeError, TypeError):
+            # Existing records may contain plain text
+            ai_summary = waste.ai_result
+
+    context = {
+        'waste': waste,
+        'ai_items': ai_items,
+        'ai_summary': ai_summary,
+        'ai_error': ai_error,
+    }
+
+    return render(
+        request,
+        'admin/waste_image.html',
+        context
+    )
+
+
 #-----------------------------recycling unit functions-----------------------
 @cache_control(no_cache=True,must_revalidate=True,no_store=True)
 def remove_staff(request):
