@@ -25,11 +25,104 @@
 
     <!-- Main content -->
     <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
+    
+<div class="container-fluid">
+
+  <!-- Dashboard Summary -->
+  <div class="row">
+    <div class="col-md-4">
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>{{ total_reports }}</h3>
+          <p>Assigned Waste Reports</p>
+        </div>
+        <div class="icon">
+          <i class="fas fa-recycle"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Assigned Waste Reports -->
+  <div class="card">
+    <div class="card-header bg-success">
+      <h3 class="card-title text-white">
+        <i class="fas fa-recycle"></i>
+        My Assigned Waste Reports
+      </h3>
+    </div>
+
+    <div class="card-body table-responsive">
+      <table class="table table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Waste Image</th>
+            <th>Waste Type</th>
+            <th>Material</th>
+            <th>Quantity (kg)</th>
+            <th>District</th>
+            <th>Assigned Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {% for report in assigned_reports %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+
+            <td>
+              {% if report.waste_image %}
+                <img src="{{ report.waste_image.url }}"
+                     alt="Waste image"
+                     width="80"
+                     height="70"
+                     style="object-fit: cover; border-radius: 5px;">
+              {% else %}
+                No Image
+              {% endif %}
+            </td>
+
+            <td>{{ report.ai_waste_type|default:report.subject }}</td>
+            <td>{{ report.ai_material|default:"Not identified" }}</td>
+
+            <td>
+              {{ report.waste_quantity_kg|default:"Not specified" }}
+            </td>
+
+            <td>{{ report.district }}</td>
+
+            <td>
+              {% if report.assigned_at %}
+                {{ report.assigned_at|date:"d M Y, h:i A" }}
+              {% else %}
+                Not available
+              {% endif %}
+            </td>
+
+            <td>
+              <span class="badge badge-success">
+                {{ report.status|default:"Assigned"|title }}
+              </span>
+            </td>
+          </tr>
+
+          {% empty %}
+          <tr>
+            <td colspan="8" class="text-center">
+              <i class="fas fa-inbox"></i>
+              No waste reports have been assigned to you yet.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
     </section>
     <!-- /.content -->
   </div>

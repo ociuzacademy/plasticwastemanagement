@@ -13,16 +13,37 @@ class register_tb(models.Model):
 	Aadhar_Number=models.CharField(max_length=30,default='0')
 
 
+
+from django.db import models
+
+
 class unit_register_tb(models.Model):
-	unit_name=models.CharField(max_length=30,default='')
-	email=models.CharField(max_length=50,default='')
-	password=models.CharField(max_length=30,default='')
-	address=models.CharField(max_length=30,default='')
-	place=models.CharField(max_length=30,default='')
-	capacity=models.CharField(max_length=30,default='')
-	mobile_Number=models.CharField(max_length=30,default='')
-	status=models.CharField(max_length=30,default='0')
-	licence_number=models.CharField(max_length=30,default='0')
+    unit_name = models.CharField(max_length=30, default='')
+    email = models.CharField(max_length=50, default='')
+    password = models.CharField(max_length=30, default='')
+    address = models.CharField(max_length=30, default='')
+    place = models.CharField(max_length=30, default='')
+    capacity = models.CharField(max_length=30, default='')
+    mobile_Number = models.CharField(max_length=30, default='')
+    status = models.CharField(max_length=30, default='0')
+    licence_number = models.CharField(max_length=30, default='0')
+
+    # Recycler matching fields
+    district = models.CharField(max_length=50, default='', blank=True)
+
+    accepted_waste_types = models.JSONField(default=list, blank=True)
+
+    available_capacity_kg = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
+
+    is_available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.unit_name
+
 
 
 class product_tb(models.Model):
@@ -102,8 +123,26 @@ class waste_location_tb(models.Model):
 	ai_confidence = models.FloatField(null=True,blank=True)
 	ai_recyclable = models.BooleanField(null=True,blank=True)
 	ai_result = models.TextField(null=True,blank=True)
+	waste_quantity_kg = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+	    # Recycler assignment
+	assigned_recycler = models.ForeignKey(
+        unit_register_tb,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_waste_reports'
+    )
 
-	
+	assigned_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
 class feedback_tb(models.Model):
 	user_id=models.ForeignKey(register_tb,on_delete=models.CASCADE)
 	product_id=models.ForeignKey(product_tb,on_delete=models.CASCADE)
